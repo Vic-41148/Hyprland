@@ -34,6 +34,18 @@ TEST_CASE(single_window_aspect_ratio) {
         EXPECT_CONTAINS(str, "at: 22,22");
         EXPECT_CONTAINS(str, "size: 1876,1036");
     }
+
+    OK(getFromSocket("/dispatch hl.dsp.window.fullscreen({ mode = 'maximized' })"));
+
+    OK(getFromSocket("/eval hl.config({ layout = { single_window_aspect_ratio_apply_on_maximize = true } })"));
+
+    OK(getFromSocket("/dispatch hl.dsp.window.fullscreen({ mode = 'maximized' })"));
+
+    {
+        auto str = getFromSocket("/activewindow");
+        EXPECT_CONTAINS(str, "at: 442,22");
+        EXPECT_CONTAINS(str, "size: 1036,1036");
+    }
 }
 
 // Don't crash when focus after global geometry changes

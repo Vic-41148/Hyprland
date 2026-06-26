@@ -134,10 +134,12 @@ void CWindowTarget::updatePos() {
 
         const static auto REQUESTEDRATIO          = CConfigValue<Config::VEC2>("layout:single_window_aspect_ratio");
         const static auto REQUESTEDRATIOTOLERANCE = CConfigValue<Config::FLOAT>("layout:single_window_aspect_ratio_tolerance");
+        const static auto APPLYONMAXIMIZE         = CConfigValue<Config::INTEGER>("layout:single_window_aspect_ratio_apply_on_maximize");
 
         Vector2D          ratioPadding;
 
-        if ((*REQUESTEDRATIO).y != 0 && m_space->algorithm()->tiledTargets() <= 1 && fullscreenMode() == FSMODE_NONE) {
+        if ((*REQUESTEDRATIO).y != 0 && m_space->algorithm()->tiledTargets() <= 1 &&
+            (fullscreenMode() == FSMODE_NONE || (fullscreenMode() == FSMODE_MAXIMIZED && *APPLYONMAXIMIZE))) {
             const Vector2D originalSize = MONITOR_WORKAREA.size();
 
             const double   requestedRatio = (*REQUESTEDRATIO).x / (*REQUESTEDRATIO).y;
